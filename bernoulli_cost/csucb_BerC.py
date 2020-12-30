@@ -12,8 +12,10 @@ N = int(sys.argv[1]) #N is number of epochs
 T = int(sys.argv[2]) #T is number of rounds in one epoch
 mu_file = 'mu.txt'
 avail_file = 'availability.txt'
+ct_fl      = 'cost.txt'
 mu = []
 avl = []
+cost = []
 n =0 
 with open(mu_file, 'r') as infile:
 	for line in infile:
@@ -26,6 +28,11 @@ with open(avail_file, 'r') as infile:
 		avl.append(float(line))
 
 avl = np.array(avl)
+
+with open(ct_fl, 'r') as infile:
+	for line in infile:
+		cost.append(float(line))
+cost = np.array(cost)
 
 regret = {}
 for i in range(T):
@@ -58,28 +65,36 @@ for j in range(N):
 		if fl==0:
 			regret[i] += 0
 			continue
-		t_ucb =  np.multiply(A_t, ucb_val)
-		t_mu  =  np.multiply(A_t, mu)
+		t_ucb =  np.multiply(A_t, ucb_val) - cost
+		t_mu  =  np.multiply(A_t, mu) - cost
 		#print("t_ucb", t_ucb)
-		#Find the index of arm with max ucb value
-		mx_ind = -1
-		mx = -100000
+		#Select all the arms (super-arm) with positive ucb - cost values (that is effective ucb) 
+		S_t = []
+		S_star = []
 		for k in range(n):	
-			if mx < t_ucb[k]:
-				mx = t_ucb[k]
-				mx_ind = k
-		I_t = mx_ind
+			if t_ucb[k] >=0:
+				S_t.append(k)
+			if t_mu[k] >= 0:
+				S_star.append(k)
+		#print (S_t, S_star)
 		#print (I_t)
-		rew = np.random.binomial(1, mu[I_t])
 		#Update 
-		tot_rew[I_t] += rew
-		num_pulls[I_t] += 1
-		expl = (3* math.log10(i+1))/ (2*num_pulls[I_t]) 
-		temp_ucb = tot_rew[I_t]/num_pulls[I_t] + math.sqrt(expl)
-		ucb_val[I_t] = temp_ucb
+		cum_rew = 0
+		opt_rew = 0
+		for k in S_t:
+			rew = np.random.binomial(1, mu[k])
+			tot_rew[k] += rew
+			num_pulls[k] += 1
+			expl = (3* math.log10(i+1))/ (2*num_pulls[k]) 
+			temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
+			ucb_val[k] = temp_ucb
+			cum_rew += mu[k] - cost[k]
 
-		a_star = np.amax(t_mu)
-		regret[i] += a_star - mu[I_t]
+		for k in S_star:
+			opt_rew += mu[k] - cost[k]
+		
+
+		regret[i] += opt_rew - cum_rew
 		#print (I_t, a_star, mu[I_t])
 	print(j)
 	print("--- %s seconds ---" % (time.time() - start_time))
