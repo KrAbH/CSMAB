@@ -37,8 +37,8 @@ with open(mu_file, 'w') as outfile:
 ########################################################################
 #Availability mean
 #range within which mean belongs
-rs = 0.3
-re = 0.7
+rs = 0.5
+re = 0.5
 mu_arr = np.random.uniform([rs]*k, [re]*k)
 mu_file = 'cost.txt'
 with open(mu_file, 'w') as outfile:

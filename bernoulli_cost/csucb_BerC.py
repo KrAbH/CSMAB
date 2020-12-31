@@ -67,6 +67,7 @@ for j in range(N):
 			continue
 		t_ucb =  np.multiply(A_t, ucb_val) - cost
 		t_mu  =  np.multiply(A_t, mu) - cost
+		#print (t_ucb, t_mu)
 		#print("t_ucb", t_ucb)
 		#Select all the arms (super-arm) with positive ucb - cost values (that is effective ucb) 
 		S_t = []
