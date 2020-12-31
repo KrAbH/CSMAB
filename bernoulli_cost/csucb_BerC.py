@@ -10,9 +10,10 @@ import time
 start_time = time.time()
 N = int(sys.argv[1]) #N is number of epochs
 T = int(sys.argv[2]) #T is number of rounds in one epoch
-mu_file = 'mu.txt'
-avail_file = 'availability.txt'
-ct_fl      = 'cost.txt'
+num_arm = int(sys.argv[3])
+mu_file = 'mu_' + str(num_arm) + '.txt'
+avail_file = 'availability_' + str(num_arm) + '.txt'
+ct_fl      = 'cost_' + str(num_arm) + '.txt'
 mu = []
 avl = []
 cost = []
@@ -101,7 +102,7 @@ for j in range(N):
 	print("--- %s seconds ---" % (time.time() - start_time))
 	start_time = time.time()
 
-out = "out1.txt"
+out = "out_k" + str(num_arm) + "_N" + str(N) + "_T" + str(T) + ".txt"
 with open(out, 'w') as outfile:
 	json.dump(regret, outfile)
 

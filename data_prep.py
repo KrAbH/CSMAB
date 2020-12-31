@@ -6,7 +6,7 @@ import sys
 import json
 
 #k: Number of arms
-k = 5
+k = int(sys.argv[1])
 
 ########################################################################
 #Reward true mean
@@ -14,7 +14,7 @@ k = 5
 rs = 0.2
 re = 0.9
 mu_arr = np.random.uniform([rs]*k, [re]*k)
-mu_file = 'mu.txt'
+mu_file = 'mu_' + str(k) + '.txt'
 with open(mu_file, 'w') as outfile:
 	for i in mu_arr:
 		outfile.write('%f\n' % i)
@@ -27,7 +27,7 @@ with open(mu_file, 'w') as outfile:
 rs = 0.3
 re = 0.7
 mu_arr = np.random.uniform([rs]*k, [re]*k)
-mu_file = 'availability.txt'
+mu_file = 'availability_' + str(k) + '.txt'
 with open(mu_file, 'w') as outfile:
 	for i in mu_arr:
 		outfile.write('%f\n' % i)
