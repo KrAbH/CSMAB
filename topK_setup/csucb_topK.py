@@ -14,7 +14,7 @@ num_arm = int(sys.argv[3])
 K = int(sys.argv[4])
 mu_file = 'mu_' + str(num_arm) + '.txt'
 avail_file = 'availability_' + str(num_arm) + '.txt'
-ct_fl      = 'cost_' + str(num_arm) + '.txt'
+#ct_fl      = 'cost_' + str(num_arm) + '.txt'
 mu = []
 avl = []
 #cost = []
@@ -36,7 +36,7 @@ regret = {}
 for i in range(T):
 	regret[i] = 0
 
-alpha = 0.9
+#alpha = 0.9
 for j in range(N):
 	
 	num_pulls = np.zeros(n, dtype = float)
@@ -95,7 +95,7 @@ for j in range(N):
 			rew = np.random.binomial(1, mu[k])
 			tot_rew[k] += rew
 			num_pulls[k] += 1
-			expl = (3* math.log10(i+1))/ (2*num_pulls[k]) 
+			expl = (3* math.log(i+1, 2))/ (2*num_pulls[k]) 
 			temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
 			ucb_val[k] = temp_ucb
 			cum_rew += mu[k]
@@ -103,13 +103,17 @@ for j in range(N):
 		for k in S_star:
 			opt_rew += mu[k]
 		
-
-		regret[i] += opt_rew - cum_rew
+		#print ("S_star: ", S_star)
+		#print ("S_t: ", S_t)
+		#print(opt_rew - cum_rew)
+		regret[i] += (opt_rew - cum_rew)
 		#print (I_t, a_star, mu[I_t])
 	print(j)
 	print("--- %s seconds ---" % (time.time() - start_time))
 	start_time = time.time()
-
+	print(mu)
+	print(ucb_val)
+	print(num_pulls)
 out = "outTopK_k" + str(num_arm) + "_N" + str(N) + "_K" + str(K) + "_T" + str(T) + ".txt"
 with open(out, 'w') as outfile:
 	json.dump(regret, outfile)

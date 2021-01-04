@@ -2,9 +2,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import json
 
-N = 1
+N = 50
 
-infil = "out1.txt"
+infil = "out_k50_N50_T100000.txt"
 
 with open(infil, 'r') as infile:
 	temp = json.load(infile)
@@ -20,4 +20,4 @@ for i in range(len(reg)):
 plt.plot(ind, reg)
 plt.xlabel('Rounds')
 plt.ylabel('Regret')
-plt.savefig('test.png', dpi=300)
+plt.savefig('graph_k5_T100000.png', dpi=300)

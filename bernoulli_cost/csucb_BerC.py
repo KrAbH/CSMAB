@@ -39,7 +39,8 @@ regret = {}
 for i in range(T):
 	regret[i] = 0
 
-alpha = 0.9
+#alpha = 0.9
+est_mu  = {}
 for j in range(N):
 	
 	num_pulls = np.zeros(n, dtype = float)
@@ -87,24 +88,30 @@ for j in range(N):
 			rew = np.random.binomial(1, mu[k])
 			tot_rew[k] += rew
 			num_pulls[k] += 1
-			expl = (3* math.log10(i+1))/ (2*num_pulls[k]) 
+			expl = (3* math.log10(i+1))/ (2*num_pulls[k]) #exploration term
 			temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
 			ucb_val[k] = temp_ucb
-			cum_rew += mu[k] - cost[k]
+			cum_rew += (mu[k] - cost[k])
 
 		for k in S_star:
-			opt_rew += mu[k] - cost[k]
+			opt_rew += (mu[k] - cost[k])
 		
 
-		regret[i] += opt_rew - cum_rew
+		regret[i] += (opt_rew - cum_rew)
 		#print (I_t, a_star, mu[I_t])
+	est_mu[j] = ucb_val
+
 	print(j)
 	print("--- %s seconds ---" % (time.time() - start_time))
 	start_time = time.time()
 
 out = "out_k" + str(num_arm) + "_N" + str(N) + "_T" + str(T) + ".txt"
+out1 = "est_mu" + str(num_arm) + "_N" + str(N) + "_T" + str(T) + ".txt"
 with open(out, 'w') as outfile:
 	json.dump(regret, outfile)
+
+with open(out1, 'w') as outfile:
+	json.dump(est_mu, outfile)
 
 
 
