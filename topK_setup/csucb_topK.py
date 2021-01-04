@@ -95,26 +95,31 @@ for j in range(N):
 			rew = np.random.binomial(1, mu[k])
 			tot_rew[k] += rew
 			num_pulls[k] += 1
-			expl = (3* math.log(i+1, 2))/ (2*num_pulls[k]) 
-			temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
-			ucb_val[k] = temp_ucb
+			#expl = (3* math.log(i+1, 2))/ (2*num_pulls[k]) 
+			#temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
+			#ucb_val[k] = temp_ucb
 			cum_rew += mu[k]
-
+		for k in range(n):
+			if num_pulls[k]!= 0:
+				expl = (3* math.log10(i+1))/ (2*num_pulls[k]) 
+				temp_ucb = tot_rew[k]/num_pulls[k] + math.sqrt(expl)
+				ucb_val[k] = temp_ucb
 		for k in S_star:
 			opt_rew += mu[k]
 		
 		#print ("S_star: ", S_star)
 		#print ("S_t: ", S_t)
 		#print(opt_rew - cum_rew)
+		print(mu)
+		print(ucb_val)
+		print(num_pulls)
 		regret[i] += (opt_rew - cum_rew)
 		#print (I_t, a_star, mu[I_t])
-	print(j)
+	#print(j)
 	print("--- %s seconds ---" % (time.time() - start_time))
 	start_time = time.time()
-	print(mu)
-	print(ucb_val)
-	print(num_pulls)
-out = "outTopK_k" + str(num_arm) + "_N" + str(N) + "_K" + str(K) + "_T" + str(T) + ".txt"
+	
+out = "outTopK_k" + str(num_arm) + "_N" + str(N) + "_K" + str(K) + "_T" + str(T) + "_2.txt"
 with open(out, 'w') as outfile:
 	json.dump(regret, outfile)
 

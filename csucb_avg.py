@@ -74,9 +74,11 @@ for j in range(N):
 		#Update 
 		tot_rew[I_t] += rew
 		num_pulls[I_t] += 1
-		expl = (3* math.log10(i+1))/ (2*num_pulls[I_t]) 
-		temp_ucb = tot_rew[I_t]/num_pulls[I_t] + math.sqrt(expl)
-		ucb_val[I_t] = temp_ucb
+		for k in range(n):
+			if num_pulls[k]!=0:
+				expl = (3* math.log10(i+1))/ (2*num_pulls[I_t]) 
+				temp_ucb = tot_rew[I_t]/num_pulls[I_t] + math.sqrt(expl)
+				ucb_val[I_t] = temp_ucb
 
 		a_star = np.amax(t_mu)
 		regret[i] += a_star - mu[I_t]
