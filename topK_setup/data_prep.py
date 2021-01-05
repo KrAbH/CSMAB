@@ -12,7 +12,7 @@ k = int(sys.argv[1])
 #Reward true mean
 #range within which true mu belongs
 rs = 0.4
-re = 0.7
+re = 0.6
 mu_arr = np.random.uniform([rs]*k, [re]*k)
 mu_file = 'mu_' + str(k) + '.txt'
 with open(mu_file, 'w') as outfile:

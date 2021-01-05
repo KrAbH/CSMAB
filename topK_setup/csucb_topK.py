@@ -65,7 +65,7 @@ for j in range(N):
 				t_ucb.append(t1)
 				t_mu.append(t2)
 				fl+= 1
-		if fl <= K:
+		if fl < K:
 			regret[i] += 0
 			print(i)
 			continue
@@ -110,16 +110,16 @@ for j in range(N):
 		#print ("S_star: ", S_star)
 		#print ("S_t: ", S_t)
 		#print(opt_rew - cum_rew)
-		print(mu)
-		print(ucb_val)
-		print(num_pulls)
+		#print(mu)
+		#print(ucb_val)
+		#print(num_pulls)
 		regret[i] += (opt_rew - cum_rew)
 		#print (I_t, a_star, mu[I_t])
-	#print(j)
+	print(j)
 	print("--- %s seconds ---" % (time.time() - start_time))
 	start_time = time.time()
 	
-out = "outTopK_k" + str(num_arm) + "_N" + str(N) + "_K" + str(K) + "_T" + str(T) + "_2.txt"
+out = "outTopK_k" + str(num_arm) + "_N" + str(N) + "_K" + str(K) + "_T" + str(T) + ".txt"
 with open(out, 'w') as outfile:
 	json.dump(regret, outfile)
 
