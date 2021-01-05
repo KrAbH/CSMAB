@@ -24,7 +24,7 @@ with open(mu_file, 'w') as outfile:
 ########################################################################
 #Availability mean
 #range within which mean belongs
-rs = 0.2
+rs = 0.4
 re = 0.7
 mu_arr = np.random.uniform([rs]*k, [re]*k)
 mu_file = 'availability_' + str(k) + '.txt'
